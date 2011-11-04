@@ -1,1 +1,0 @@
-/*Funciones relacionadas con el manejo DOM*/
