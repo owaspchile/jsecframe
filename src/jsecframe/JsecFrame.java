@@ -1,19 +1,26 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package jsecframe;
 
-/**
- *
- * @author caapabla
- */
+import com.org.jsec.core.Dom;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 public class JsecFrame {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
+        try {
+            Document doc = Jsoup.connect("http://www.fayerwayer.cl").get();
+            Elements forms = Dom.getForms(doc);
+            System.out.println("Formularios:");
+           // System.out.println(forms);
+            for(Element fields : forms){
+                System.out.println("ACTIONS: " +fields.attr("action"));
+                System.out.println(Dom.getFieldsForm(fields));                
+            }
+        } catch (Exception e) {
+            
+            System.out.println(e.getMessage());
+        }
     }
 }
