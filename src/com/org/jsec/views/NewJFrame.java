@@ -4,9 +4,11 @@ package com.org.jsec.views;
 import com.org.jsec.core.Dom;
 import com.org.jsec.core.Enviroment;
 import com.org.jsec.core.HTTP;
+import com.org.jsec.utils.BrowserUtils;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
@@ -44,10 +46,17 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         JtxtScriptJS = new javax.swing.JTextPane();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        JtxtLinks = new javax.swing.JTextPane();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        JtxtSourceCode = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Jsec");
@@ -157,6 +166,10 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jScrollPane5.setViewportView(JtxtScriptJS);
 
+        jLabel6.setText("Links, images, imports :");
+
+        jScrollPane7.setViewportView(JtxtLinks);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -164,8 +177,10 @@ public class NewJFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 798, Short.MAX_VALUE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 798, Short.MAX_VALUE)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -175,10 +190,35 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(221, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Extra Information", jPanel2);
+
+        jScrollPane6.setViewportView(JtxtSourceCode);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 798, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Source code", jPanel3);
 
         jMenu1.setText("File");
 
@@ -193,7 +233,16 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Utils");
+
+        jMenuItem2.setText("Open Browser");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -222,6 +271,7 @@ public class NewJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        JOptionPane.showMessageDialog(this, "!Come back soon!");
         System.exit(0);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -242,18 +292,28 @@ public class NewJFrame extends javax.swing.JFrame {
                 JtxtCookies.setText(http.getResponse().cookies().toString());
                 JtxtHeaders.setText(http.getResponse().headers().toString());
                 JtxtScriptJS.setText(http.getResponse().parse().getElementsByTag("script").html());
+                JtxtSourceCode.setText(http.getResponse().parse().outerHtml());
+                JtxtLinks.setText(Dom.getAllLinks(doc));
             }
             
         } catch(IOException io){                
-                JtxtResults.setText(io.getMessage());
+            JOptionPane.showMessageDialog(this,"IOException : "+ io.getMessage());                
         }
         catch(NullPointerException n){
-                JtxtResults.setText(n.getMessage());
+            JOptionPane.showMessageDialog(this,"NullPointerException : "+ n.getMessage());    
         }catch (Exception e) {            
-            JtxtResults.setText(e.getMessage());
+            JOptionPane.showMessageDialog(this,"Exception : "+ e.getMessage());    
         } 
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        try {
+            BrowserUtils.openBrowserByUrl(JtxtURL.getText());                                    
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
 
     public static void main(String args[]) {
@@ -295,8 +355,10 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.ButtonGroup JbtnGroupMethods;
     private javax.swing.JTextArea JtxtCookies;
     private javax.swing.JTextArea JtxtHeaders;
+    private javax.swing.JTextPane JtxtLinks;
     private javax.swing.JTextArea JtxtResults;
     private javax.swing.JTextPane JtxtScriptJS;
+    private javax.swing.JTextPane JtxtSourceCode;
     private javax.swing.JTextPane JtxtURL;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -304,12 +366,15 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -317,6 +382,8 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
