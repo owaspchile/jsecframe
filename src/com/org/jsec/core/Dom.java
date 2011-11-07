@@ -15,10 +15,16 @@ public class Dom {
             throw e;
         }
     }
-    
-    public static Elements getFieldsForm(Element form) throws Exception{
+    /* Retorna un string con todos los formularios y sus campos
+     */
+    public static String getFieldsForm(Elements forms) throws Exception{
         try {
-            return form.getAllElements();
+            String data ="";
+            for (Element fields : forms) {                
+                data = data + fields.toString();                                                           
+            }   
+            
+            return data;
         } catch (Exception e) {
             throw e;
         }
