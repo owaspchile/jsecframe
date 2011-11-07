@@ -1,4 +1,3 @@
-
 package com.org.jsec.views;
 
 import com.org.jsec.core.Dom;
@@ -14,7 +13,6 @@ import org.jsoup.select.Elements;
 
 public class NewJFrame extends javax.swing.JFrame {
 
-   
     public NewJFrame() {
         initComponents();
     }
@@ -24,6 +22,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         JbtnGroupMethods = new javax.swing.ButtonGroup();
+        jTextField1 = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
@@ -40,8 +39,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         JtxtResults = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        JtxtURL = new javax.swing.JTextPane();
+        JtxtURL = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -57,6 +55,8 @@ public class NewJFrame extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+
+        jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Jsec");
@@ -106,8 +106,11 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-        JtxtURL.setAutoscrolls(false);
-        jScrollPane1.setViewportView(JtxtURL);
+        JtxtURL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JtxtURLActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -120,9 +123,9 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(JtxtURL, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jRadioButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jRadioButton2)
@@ -140,11 +143,12 @@ public class NewJFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(JtxtURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jRadioButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jRadioButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jRadioButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addGap(7, 7, 7)
@@ -276,45 +280,46 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {            
-            HashMap<String,String> args = new HashMap<String, String>();
-            args.put(Enviroment.url, JtxtURL.getText());            
+        try {
+            HashMap<String, String> args = new HashMap<String, String>();
+            args.put(Enviroment.url, JtxtURL.getText());
             args.put(Enviroment.method, JbtnGroupMethods.getSelection().getActionCommand().toString());
             HTTP http = new HTTP();
             Document doc = http.sendRequest(args);
-            
-            Elements forms = Dom.getForms(doc);               
+
+            Elements forms = Dom.getForms(doc);
             String results = Dom.getFieldsForm(forms);
-            if(results.isEmpty())                
-                JtxtResults.setText("Not forms available");     
-            else{
-                JtxtResults.setText(results);   
-                JtxtCookies.setText(http.getResponse().cookies().toString());
-                JtxtHeaders.setText(http.getResponse().headers().toString());
-                JtxtScriptJS.setText(http.getResponse().parse().getElementsByTag("script").html());
-                JtxtSourceCode.setText(http.getResponse().parse().outerHtml());
-                JtxtLinks.setText(Dom.getAllLinks(doc));
+            if (results.isEmpty()) {
+                JtxtResults.setText("Not forms available");
+            } else {
+                JtxtResults.setText(results);
             }
-            
-        } catch(IOException io){                
-            JOptionPane.showMessageDialog(this,"IOException : "+ io.getMessage());                
+            JtxtCookies.setText(http.getResponse().cookies().toString());
+            JtxtScriptJS.setText(http.getResponse().parse().getElementsByTag("script").html());
+            JtxtSourceCode.setText(http.getResponse().parse().outerHtml());
+            JtxtLinks.setText(Dom.getAllLinks(doc));
+            JtxtHeaders.setText(http.getResponse().headers().toString());
+        } catch (IOException io) {
+            JOptionPane.showMessageDialog(this, "IOException : " + io.getMessage());
+        } catch (NullPointerException n) {
+            JOptionPane.showMessageDialog(this, "NullPointerException : " + n.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Exception : " + e.getMessage());
         }
-        catch(NullPointerException n){
-            JOptionPane.showMessageDialog(this,"NullPointerException : "+ n.getMessage());    
-        }catch (Exception e) {            
-            JOptionPane.showMessageDialog(this,"Exception : "+ e.getMessage());    
-        } 
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         try {
-            BrowserUtils.openBrowserByUrl(JtxtURL.getText());                                    
+            BrowserUtils.openBrowserByUrl(JtxtURL.getText());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void JtxtURLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtxtURLActionPerformed
+        this.jButton1ActionPerformed(evt);
+    }//GEN-LAST:event_JtxtURLActionPerformed
 
     public static void main(String args[]) {
 
@@ -343,11 +348,11 @@ public class NewJFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             @Override
-            public void run() {                
-              JFrame frame = new NewJFrame();
-              frame.setVisible(true); 
-              frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-              
+            public void run() {
+                JFrame frame = new NewJFrame();
+                frame.setVisible(true);
+                frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+
             }
         });
     }
@@ -359,7 +364,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea JtxtResults;
     private javax.swing.JTextPane JtxtScriptJS;
     private javax.swing.JTextPane JtxtSourceCode;
-    private javax.swing.JTextPane JtxtURL;
+    private javax.swing.JTextField JtxtURL;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -377,7 +382,6 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -386,5 +390,6 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
