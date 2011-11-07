@@ -56,17 +56,5 @@ public class Dom {
             throw e;
         }
     }
-    
-    private static void print(String out,String msg, Object... args) {
-        out = out +String.format(msg, args).toString();        
-    }
-   
-
-    private static String trim(String s, int width) {
-        if (s.length() > width) {
-            return s.substring(0, width - 1) + ".";
-        } else {
-            return s;
-        }
-    }
+        
 }
